@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./images/social.png" type="image/x-icon">
+  <title>Storico Acquisti</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .table-rounded {
+      border-radius: 0.5rem; /* Arrotondamento dei bordi */
+      overflow: hidden; /* Evita che il contenuto esca dai bordi arrotondati */
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/riservato"><i class="fas fa-home"></i> Amazoff - Storico Acquisti</a>
+    <a href="/carrello" class="btn btn-outline-light ms-auto me-3" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Carrello">
+      <i class="fas fa-shopping-cart fa-lg"></i>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Opzioni</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/riservato">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/modificaProfilo">Modifica Account</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/carrello">Carrello</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Storico Acquisti</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/gestioneProdotti">Gestione Prodotti</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/gestioneUtenti">Gestione Utenti</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div style="height:80px"></div>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card p-4" style="width: 60%;">
+    <h3>Storico acquisti di username</h3>
+
+    <!-- Messaggi di notifica -->
+    <div th:if="${message}" class="alert alert-success" role="alert" th:text="${message}"></div>
+
+    <table class="table table-bordered table-rounded mt-3">
+      <thead class="table-dark">
+      <tr>
+        <th style="width: 50px;"></th>
+        <th>Prodotto</th>
+        <th>Prezzo</th>
+        <th style="width: 130px;">Data Acquisto</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="item : ${elencoAcquisti}">
+        <td>
+          <img th:src="@{'./images/' + ${item.prodotto.id} + '.jpg'}" alt="Immagine prodotto" style="max-width: 100px; max-height: 100px; object-fit: contain;">
+        </td>
+        <td th:text="${item.prodotto.descrizione}">Nome prodotto</td>
+        <td>€<span th:text="${item.costo}">0.00</span></td>
+        <td th:text="${item.data}">Data acquisto</td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

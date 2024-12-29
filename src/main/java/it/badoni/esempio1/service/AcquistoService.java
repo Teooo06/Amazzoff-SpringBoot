@@ -50,6 +50,7 @@ public class AcquistoService {
         return acquistoRepository.findAllByUtente(utente);
     }
 
+
     public String compra(Utente utente) {
         // Metto gli acquisti dell'utente da carrello a acquisti
         for (Acquisto acquisto : acquistoRepository.findAllByUtente(utente)) {
