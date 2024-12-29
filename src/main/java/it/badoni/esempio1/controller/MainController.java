@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+
 
 @Controller
 
@@ -50,7 +52,6 @@ public class MainController {
             return "redirect:/riservato";
         }else{
             redirectAttributes.addAttribute("msg", "Credenziali errate");
-
             return "redirect:/";
         }
     }
@@ -71,6 +72,35 @@ public class MainController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
+        return "redirect:/";
+    }
+
+    @GetMapping("/registrazione")
+    public String toRegPage(){
+        return "/registrazione";
+    }
+
+    @PostMapping("/registrazione")
+    public String registrazione(RedirectAttributes redirectAttributes, Model model, HttpSession session,
+                                @RequestParam("username") String username,
+                                @RequestParam("cognome") String cognome,
+                                @RequestParam("nome") String nome,
+                                @RequestParam("citta") String citta,
+                                @RequestParam("mail") String mail,
+                                @RequestParam("data") String data,
+                                @RequestParam("password") String pass,
+                                @RequestParam("confPassword") String confPass){
+        if (!pass.equals(confPass)){
+            redirectAttributes.addAttribute("msg", "La password non corrisponde");
+        }
+        else {
+            Utente utente = new Utente(username, pass, cognome, nome, citta, mail, LocalDate.parse(data));
+            if (utente != null) {
+                utenteService.aggiungiUtente(utente);
+                session.setAttribute("utente", utente);
+                return "redirect:/riservato";
+            }
+        }
         return "redirect:/";
     }
 
