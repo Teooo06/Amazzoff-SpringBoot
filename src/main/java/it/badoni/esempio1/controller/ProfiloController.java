@@ -72,8 +72,64 @@ public class ProfiloController {
         return "redirect:/modificaProfilo";
     }
 
+    @GetMapping("/selezionato")
+    public String selezionaUtente(@RequestParam("id") String utenteId, Model model) {
+        // Recupera l'utente selezionato dal database
+        Utente utenteSelezionato = utenteService.getUtenteByUsername(utenteId);
+        if (utenteSelezionato == null) {
+            // Gestione errore: ID non valido
+            return "redirect:/errore";
+        }
 
+        // Aggiungi l'utente al modello
+        model.addAttribute("utenteSelezionato", utenteSelezionato);
+        model.addAttribute("utenti", utenteService.getUtenti());
 
+        // Ritorna alla pagina HTML
+        return "/utenti";
+    }
+
+    @PostMapping("/aggiornaUtente")
+    public String aggiornaUtente(@RequestParam("username") String username,
+                                  @RequestParam("nome") String nome,
+                                  @RequestParam("cognome") String cognome,
+                                  @RequestParam("email") String email,
+                                  @RequestParam("dataNascita") String dataNascita,
+                                  @RequestParam("citta") String citta,
+                                  @RequestParam("password") String password,
+                                  @RequestParam("vecchiaPassword") String vecchiaPassword,
+                                  RedirectAttributes redirectAttributes,
+                                  HttpSession session)
+    {
+        Utente utente = (Utente) session.getAttribute("utente");
+        LocalDate FormattedDataNascita = LocalDate.parse(dataNascita);
+        int res = utenteService.aggiornaProfilo(utente, username, nome, cognome, email,
+                FormattedDataNascita, citta, password, vecchiaPassword);
+
+        String msg;
+        if (res == -1) {
+            msg = "Utente non trovato";
+        } else if (res == -2) {
+            msg = "Password errata";
+        } else {
+            msg = "Profilo aggiornato";
+
+            // Aggiorna l'utente nella sessione con i nuovi dati
+            utente.setNome(nome);
+            utente.setCognome(cognome);
+            utente.setEmail(email);
+            utente.setDataNascita(FormattedDataNascita);
+            utente.setCitta(citta);
+            utente.setPassword(password);  // Assicurati che la password venga aggiornata correttamente
+
+            // Salva l'utente aggiornato nella sessione
+            session.setAttribute("utente", utente);
+        }
+
+        redirectAttributes.addAttribute("msg", msg);
+        redirectAttributes.addFlashAttribute("msg", msg);
+        return "redirect:/utenti";
+    }
 
     @ControllerAdvice
     public static class GlobalExceptionHandler {

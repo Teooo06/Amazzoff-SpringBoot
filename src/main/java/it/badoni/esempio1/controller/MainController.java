@@ -32,6 +32,7 @@ public class MainController {
     @GetMapping("/utenti")
     public String utenti(Model model) {
         model.addAttribute("utenti",utenteService.getUtenti());
+        model.addAttribute("utenteSelezionato", null);
         return "utenti";
     }
 
