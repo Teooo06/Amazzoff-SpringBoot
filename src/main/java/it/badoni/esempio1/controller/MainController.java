@@ -29,14 +29,6 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/prodotti")
-    public String prodotti(Model model) {
-        model.addAttribute("titolo", "Titolo incluso nel controller");
-        model.addAttribute("titolo1", "sottotitolo");
-        model.addAttribute("elencoProdotti", prodottoService.getProdotti());
-        return "prodotti";
-    }
-
     @GetMapping("/utenti")
     public String utenti(Model model) {
         model.addAttribute("utenti",utenteService.getUtenti());

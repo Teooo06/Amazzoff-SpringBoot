@@ -32,24 +32,41 @@
 <body>
 <nav class="navbar navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><i class="fas fa-home"></i> Amazoff - Gestione Prodotti</a>
+    <a class="navbar-brand" href="/riservato"><i class="fas fa-home"></i> Amazoff - Carrello</a>
+    <a href="/carrello" class="btn btn-outline-light ms-auto me-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Carrello">
+      <i class="fas fa-shopping-cart fa-lg"></i>
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Opzioni</h5>
+        <h5 class="offcanvas-title">Opzioni</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Modifica Account</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Carrello</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Storico Acquisti</a></li>
-          <li class="nav-item"><a class="nav-link active" href="#">Gestione Prodotti</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Gestione Utenti</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Logout</a></li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/riservato">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/modificaProfilo" >Modifica Account</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/carrello" >Carrello</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/acquisti" >Storico Acquisti</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/#" >Gestione Prodotti</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/utenti" >Gestione Utenti</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -71,12 +88,13 @@
     </tr>
     </thead>
     <tbody>
-    <!-- I dati dinamici sono stati rimossi, aggiungi manualmente se necessario -->
-    <tr>
-      <td><input type="text" class="form-control" value="1" readonly></td>
-      <td><input type="text" class="form-control" value="Prodotto Esempio"></td>
-      <td><input type="number" class="form-control" value="99.99"></td>
-      <td><input type="text" class="form-control" value="Categoria Esempio"></td>
+
+
+    <tr th:each="item : ${elencoProdotti}">
+      <td><input type="text" class="form-control" th:value="${item.id}" readonly></td>
+      <td><input type="text" class="form-control" th:value="${item.descrizione}"></td>
+      <td><input type="number" class="form-control" th:value="${item.prezzo}"></td>
+      <td><input type="text" class="form-control" th:value="${item.categoria}"></td>
       <td class="no-space">
         <button class="btn btn-success">Salva</button>
         <button class="btn btn-danger">Elimina</button>

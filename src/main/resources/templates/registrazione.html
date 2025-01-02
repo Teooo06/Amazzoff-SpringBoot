@@ -17,6 +17,17 @@
         .centra{
             text-align: center;
         }
+
+
+        .reg {
+            display: flex;
+            justify-content: center; /* Centra orizzontalmente */
+            margin: 20px 0;
+        }
+
+        .link{
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -61,6 +72,10 @@
             <div th:if="${msg}" class="alert alert-danger" role="alert" style="margin-top: 5px" th:text="${msg}"></div>
             <input type="submit" value="Registrati" class="btn btn-primary w-50 mt-2">
         </form>
+        <div class="reg">
+            <p style="margin-right: 5px;">Sei già registrato?</p>
+            <a href="/" class="link">Accedi</a>
+        </div>
     </div>
 </div>
 </body>

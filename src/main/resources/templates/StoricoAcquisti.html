@@ -62,7 +62,7 @@
 
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
   <div class="card p-4" style="width: 60%;">
-    <h3>Storico acquisti di username</h3>
+    <h3>Storico acquisti di <span th:text="${utente}">Utente</span></h3>
 
     <!-- Messaggi di notifica -->
     <div th:if="${message}" class="alert alert-success" role="alert" th:text="${message}"></div>
