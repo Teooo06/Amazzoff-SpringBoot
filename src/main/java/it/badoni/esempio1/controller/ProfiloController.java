@@ -101,7 +101,7 @@ public class ProfiloController {
                                   RedirectAttributes redirectAttributes,
                                   HttpSession session)
     {
-        Utente utente = (Utente) session.getAttribute("utente");
+        Utente utente = utenteService.getUtenteByUsername(username);
         LocalDate FormattedDataNascita = LocalDate.parse(dataNascita);
         int res = utenteService.aggiornaProfilo(utente, username, nome, cognome, email,
                 FormattedDataNascita, citta, password, vecchiaPassword);
@@ -113,17 +113,6 @@ public class ProfiloController {
             msg = "Password errata";
         } else {
             msg = "Profilo aggiornato";
-
-            // Aggiorna l'utente nella sessione con i nuovi dati
-            utente.setNome(nome);
-            utente.setCognome(cognome);
-            utente.setEmail(email);
-            utente.setDataNascita(FormattedDataNascita);
-            utente.setCitta(citta);
-            utente.setPassword(password);  // Assicurati che la password venga aggiornata correttamente
-
-            // Salva l'utente aggiornato nella sessione
-            session.setAttribute("utente", utente);
         }
 
         redirectAttributes.addAttribute("msg", msg);

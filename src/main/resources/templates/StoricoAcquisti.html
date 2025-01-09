@@ -43,11 +43,11 @@
           <li class="nav-item">
             <a class="nav-link active" href="#">Storico Acquisti</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/gestioneProdotti">Gestione Prodotti</a>
+          <li class="nav-item" th:if="${session.utente != null and session.utente.admin == 1}">
+            <a class="nav-link" href="/prodotti">Gestione Prodotti</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/gestioneUtenti">Gestione Utenti</a>
+          <li class="nav-item" th:if="${session.utente != null and session.utente.admin == 1}">
+            <a class="nav-link" href="/utenti">Gestione Utenti</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/logout">Logout</a>

@@ -84,46 +84,64 @@
       <th>Descrizione</th>
       <th>Prezzo</th>
       <th>Categoria</th>
-      <th>Azione</th>
+      <th colspan="2">Azione</th>
     </tr>
     </thead>
     <tbody>
 
 
     <tr th:each="item : ${elencoProdotti}">
-      <td><input type="text" class="form-control" th:value="${item.id}" readonly></td>
-      <td><input type="text" class="form-control" th:value="${item.descrizione}"></td>
-      <td><input type="number" class="form-control" th:value="${item.prezzo}"></td>
-      <td><input type="text" class="form-control" th:value="${item.categoria}"></td>
-      <td class="no-space">
-        <button class="btn btn-success">Salva</button>
-        <button class="btn btn-danger">Elimina</button>
-      </td>
+      <!-- Form per Salvare il Prodotto -->
+      <form action="/salvaProdotto" method="post" style="display: flex; align-items: center;">
+        <td>
+          <input type="text" class="form-control" name="id" th:value="${item.id}" readonly>
+        </td>
+        <td>
+          <input type="text" class="form-control" name="descrizione" th:value="${item.descrizione}">
+        </td>
+        <td>
+          <input type="number" class="form-control" name="prezzo" th:value="${item.prezzo}">
+        </td>
+        <td>
+          <input type="text" class="form-control" name="categoria" th:value="${item.categoria}">
+        </td>
+        <td style="text-align: center;">
+            <button type="submit" class="btn btn-success">Salva</button>
+        </td>
+      </form>
+
+      <!-- Form per Eliminare il Prodotto -->
+      <form action="/eliminaProdotto" method="post" style="margin-left: 10px;">
+        <td style="text-align: center;">
+          <input type="hidden" name="id" th:value="${item.id}">
+          <button type="submit" class="btn btn-danger">Elimina</button>
+        </td>
+      </form>
     </tr>
     </tbody>
   </table>
 
   <div class="card p-4 mt-5 w-75 mx-auto">
     <h4>Aggiungi Nuovo Prodotto</h4>
-    <form>
+    <form action="/aggiungiProdotto">
       <div class="row mb-3">
         <div class="col">
           <label for="id" class="form-label">ID</label>
-          <input type="text" class="form-control" id="id">
+          <input type="text" class="form-control" id="id" name="id">
         </div>
         <div class="col">
           <label for="descrizione" class="form-label">Descrizione</label>
-          <input type="text" class="form-control" id="descrizione">
+          <input type="text" class="form-control" id="descrizione" name="descrizione">
         </div>
       </div>
       <div class="row mb-3">
         <div class="col">
           <label for="prezzo" class="form-label">Prezzo (€)</label>
-          <input type="number" class="form-control" id="prezzo" step="0.01">
+          <input type="number" class="form-control" id="prezzo" step="0.01" name="prezzo">
         </div>
         <div class="col">
           <label for="categoria" class="form-label">Categoria</label>
-          <input type="text" class="form-control" id="categoria">
+          <input type="text" class="form-control" id="categoria" name="categoria">
         </div>
       </div>
       <div class="text-center">
@@ -132,7 +150,7 @@
     </form>
   </div>
 </div>
-
+<div style="height: 200px"></div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

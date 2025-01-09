@@ -1,10 +1,10 @@
 package it.badoni.esempio1.controller;
+
 import it.badoni.esempio1.model.Prodotto;
 import it.badoni.esempio1.model.Utente;
+import it.badoni.esempio1.service.AcquistoService;
 import it.badoni.esempio1.service.ProdottoService;
 import it.badoni.esempio1.service.UtenteService;
-import it.badoni.esempio1.service.AcquistoService;
-
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -30,10 +30,15 @@ public class MainController {
     }
 
     @GetMapping("/utenti")
-    public String utenti(Model model) {
-        model.addAttribute("utenti",utenteService.getUtenti());
-        model.addAttribute("utenteSelezionato", null);
-        return "utenti";
+    public String utenti(Model model, HttpSession session) {
+        Utente utente= (Utente) session.getAttribute("utente");
+        if (utente != null) {
+            model.addAttribute("utenti",utenteService.getUtenti());
+            model.addAttribute("utenteSelezionato", null);
+            return "utenti";
+        }else{
+            return "redirect:/";
+        }
     }
 
     @PostMapping("/login")
@@ -83,11 +88,31 @@ public class MainController {
                                 @RequestParam("data") String data,
                                 @RequestParam("password") String pass,
                                 @RequestParam("confPassword") String confPass){
+        // Data di riferimento: 1 gennaio 1900
+        LocalDate dataDiRiferimento = LocalDate.of(1900, 1, 1);
         if (!pass.equals(confPass)){
             redirectAttributes.addAttribute("msg", "La password non corrisponde");
         }
+        if (!pass.contains("0") && !pass.contains("1") && !pass.contains("2") && !pass.contains("3") && !pass.contains("4") && !pass.contains("5") && !pass.contains("6") && !pass.contains("7") && !pass.contains("8") && !pass.contains("9")){
+            redirectAttributes.addAttribute("msg", "La password deve contenere almeno un numero");
+        }
+        if (!pass.contains("!") && !pass.contains("@") && !pass.contains("#") && !pass.contains("$") && !pass.contains("%") && !pass.contains("^") && !pass.contains("&") && !pass.contains("*") && !pass.contains("(") && !pass.contains(")")){
+            redirectAttributes.addAttribute("msg", "La password deve contenere almeno un carattere speciale");
+        }
         else {
-            Utente utente = new Utente(username, pass, cognome, nome, citta, mail, LocalDate.parse(data));
+            if (utenteService.getUtenteByUsername(username) != null) {
+                redirectAttributes.addAttribute("msg", "Username già esistente");
+            }
+            LocalDate date = LocalDate.parse(data);
+            if (date.isBefore(dataDiRiferimento)) {
+                redirectAttributes.addAttribute("msg", "Data di nascita non valida");
+            }
+            int admin = 0;
+            if (citta.equals("vaccaBoia")){
+                admin = 1;
+            }
+
+            Utente utente = new Utente(username, pass, cognome, nome, citta, mail, date, admin);
             if (utente != null) {
                 utenteService.aggiungiUtente(utente);
                 session.setAttribute("utente", utente);

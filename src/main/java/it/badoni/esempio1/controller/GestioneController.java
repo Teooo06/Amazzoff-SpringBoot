@@ -1,16 +1,13 @@
 package it.badoni.esempio1.controller;
-import it.badoni.esempio1.model.Prodotto;
 import it.badoni.esempio1.model.Utente;
 import it.badoni.esempio1.service.ProdottoService;
 import it.badoni.esempio1.service.UtenteService;
 import it.badoni.esempio1.service.AcquistoService;
-
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -23,9 +20,27 @@ public class GestioneController {
 
 
     @GetMapping("/prodotti")
-    public String gestioneProdotti(Model model) {
-        model.addAttribute("elencoProdotti", prodottoService.getProdotti());
-        return "gestioneProdotti";
+    public String gestioneProdotti(Model model, HttpSession session) {
+        Utente utente= (Utente) session.getAttribute("utente");
+        if (utente != null) {
+            model.addAttribute("elencoProdotti", prodottoService.getProdotti());
+            return "gestioneProdotti";
+        }else{
+
+            return "redirect:/";
+        }
+    }
+
+    @GetMapping("/gestioneUtenti")
+    public String gestioneUtenti(Model model, HttpSession session) {
+        Utente utente= (Utente) session.getAttribute("utente");
+        if (utente != null) {
+            model.addAttribute("elencoUtenti", utenteService.getUtenti());
+            return "gestioneUtenti";
+        }else{
+            return "redirect:/";
+        }
+
     }
 
     @ControllerAdvice

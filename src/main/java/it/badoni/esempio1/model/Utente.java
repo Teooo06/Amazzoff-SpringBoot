@@ -27,6 +27,7 @@ public class Utente {
    private String email;
    @Column (name="datanascita")
    private LocalDate dataNascita;
+   private int admin;
 
 
 }
