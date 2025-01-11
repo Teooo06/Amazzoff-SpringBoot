@@ -35,7 +35,7 @@ public class MainController {
         if (utente != null) {
             model.addAttribute("utenti",utenteService.getUtenti());
             model.addAttribute("utenteSelezionato", null);
-            return "/utenti";
+            return "utenti";
         }else{
             return "redirect:/";
         }
