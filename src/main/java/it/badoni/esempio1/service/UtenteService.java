@@ -4,6 +4,7 @@ import it.badoni.esempio1.model.Utente;
 import it.badoni.esempio1.repository.UtenteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.time.LocalDate;
@@ -64,5 +65,26 @@ public class UtenteService {
         // Aggiorno l'utente:
         utenteRepository.save(utenteLoggato);
         return 0;
+    }
+
+    public int aggiornaUtente(Utente utente, String username){
+        Utente utenteMod = utenteRepository.findByUsername(username);
+        if (utenteMod == null){
+            return -1;
+        }
+
+        utenteMod.setNome(utente.getNome());
+        utenteMod.setCognome(utente.getCognome());
+        utenteMod.setEmail(utente.getEmail());
+        utenteMod.setDataNascita(utente.getDataNascita());
+        utenteMod.setCitta(utente.getCitta());
+        utenteMod.setAdmin(utente.getAdmin());
+
+        utenteRepository.save(utenteMod);
+        return 0;
+    }
+
+    @Transactional
+    public void eliminaUtente(String username) {utenteRepository.deleteByUsername(username);
     }
 }

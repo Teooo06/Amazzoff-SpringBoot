@@ -63,7 +63,7 @@
 
         .distanziale{
             width: auto;
-            height: 50px;
+            height: 25px;
         }
     </style>
 </head>
@@ -111,84 +111,117 @@
     </div>
 </nav>
 <!-- Spazio per evitare che la navbar copra il contenuto -->
-<div style="height:80px"></div>
+<div style="height:40px"></div>
 
 <div class="container mt-5">
     <div class="distanziale"></div>
     <h1>Gestione Utenti</h1>
-    <div class="distanziale"></div>
 
     <table class="table table-bordered table-rounded mt-3">
         <thead class="table-dark">
-        <tr>
-            <th>Cognome</th>
-            <th>Nome</th>
-            <th>Città</th>
-            <th>Data di nascita</th>
-            <th>Mail</th>
-        </tr>
+            <tr>
+                <th>Username</th>
+                <th>Cognome</th>
+                <th>Nome</th>
+                <th>Città</th>
+                <th>Data di Nascita</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th colspan="2">Action</th>
+            </tr>
         </thead>
-        <tr th:each="utente : ${utenti}" th:onclick="|window.location.href='@{/selezionato(id=${utente.username})}'|">
-            <th th:text="${utente.cognome}"></th>
-            <th th:text="${utente.nome}"></th>
-            <th th:text="${utente.citta}"></th>
-            <th th:text="${utente.dataNascita}"></th>
-            <th th:text="${utente.email}"></th>
-        </tr>
+        <tbody>
+            <tr th:each="utente : ${utenti}">
+                <!-- Form per Salvare il Prodotto -->
+                <form action="/salvaUtente" method="post" style="display: flex; align-items: center;">
+                    <td>
+                        <input type="text" class="form-control" name="username" th:value="${utente.username}" readonly>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="cognome" th:value="${utente.cognome}">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="nome" th:value="${utente.nome}">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="citta" th:value="${utente.citta}">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="dataNascita" th:value="${utente.dataNascita}">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="email" th:value="${utente.email}">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" name="admin" th:value="${utente.admin}">
+                    </td>
+                    <td style="text-align: center;">
+                        <button type="submit" class="btn btn-success">Salva</button>
+                    </td>
+                </form>
+
+                <!-- Form per Eliminare il Prodotto -->
+                <form action="/eliminaUtenti" method="post" style="margin-left: 10px;">
+                    <td style="text-align: center;">
+                        <input type="hidden" name="user" th:value="${utente.username}">
+                        <button type="submit" class="btn btn-danger">Elimina</button>
+                    </td>
+                </form>
+            </tr>
+        </tbody>
     </table>
 
-    <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-        <div class="card p-4" style="width: 1000px;">
-            <h1 class="text-center">Modifica il tuo profilo</h1>
-            <form method="post" th:action="@{/aggiornaUtente}">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="usernameON" class="form-control" id="floatingUsername" th:value="${utenteSelezionato?.username}" disabled>
-                            <input type="hidden" name="username" th:value="${utenteSelezionato?.username}">
-                            <label for="floatingUsername">Username</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" name="cognome" class="form-control" id="floatingCognome" th:value="${utenteSelezionato?.cognome}" required>
-                            <label for="floatingCognome">Cognome</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="email" name="email" class="form-control" id="floatingEmail" th:value="${utenteSelezionato?.email}" required>
-                            <label for="floatingEmail">Email</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" name="vecchiaPassword" class="form-control" id="floatingPassword">
-                            <label for="floatingPassword">Vecchia Password</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="nome" class="form-control" id="floatingNome" th:value="${utenteSelezionato?.nome}" required>
-                            <label for="floatingNome">Nome</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" name="citta" class="form-control" id="floatingCitta" th:value="${utenteSelezionato?.citta}" required>
-                            <label for="floatingCitta">Città</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" name="dataNascita" class="form-control" id="floatingDataNascita" th:value="${utenteSelezionato?.dataNascita}" required>
-                            <label for="floatingDataNascita">Data di Nascita</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" name="password" class="form-control" id="floatingNewPassword">
-                            <label for="floatingNewPassword">Nuova Password</label>
-                        </div>
-                    </div>
+    <div class="card p-4 mt-5 w-75 mx-auto">
+        <h4>Aggiungi Nuovo Utente</h4>
+        <form action="/aggiungiUtente">
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="username1" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username1" name="username1" required>
                 </div>
-
-                <div class="d-flex justify-content-center mt-3">
-                    <input type="submit" value="Aggiorna Profilo" class="btn btn-dark w-50">
+                <div class="col">
+                    <label for="cognome1" class="form-label">Cognome</label>
+                    <input type="text" class="form-control" id="cognome1" step="0.01" name="cognome1" required>
                 </div>
-            </form>
-        </div>
+                <div class="col">
+                    <label for="nome1" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="nome1" name="nome1" required>
+                </div>
+                <div class="col">
+                    <label for="citta1" class="form-label">Città</label>
+                    <input type="text" class="form-control" id="citta1" name="citta1" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="dataNascita1" class="form-label">Data di Nascita</label>
+                    <input type="date" class="form-control" id="dataNascita1" name="dataNascita1" required>
+                </div>
+                <div class="col">
+                    <label for="email1" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="email1" name="email1" required>
+                </div>
+                <div class="col">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="col">
+                    <label for="passConf" class="form-label">Conferma Password</label>
+                    <input type="password" class="form-control" id="passConf" name="passConf" required>
+                </div>
+            </div>
+            <div class="text-center" style="margin-bottom: 25px">
+                <label for="admin1" class="form-label">Admin Value</label>
+                <input type="number" class="form-control" id="admin1" name="admin1" required>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary w-50">Aggiungi Utente</button>
+            </div>
+        </form>
     </div>
 </div>
+<div class="distanziale"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
