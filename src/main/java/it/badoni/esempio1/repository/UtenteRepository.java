@@ -15,4 +15,8 @@ public interface UtenteRepository extends JpaRepository<Utente, String> {
 
     Utente findByUsername(String username);
 
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Utente u WHERE u.username = :username")
+    void deleteByUsername(@Param("username") String username);
 }
